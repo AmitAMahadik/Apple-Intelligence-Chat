@@ -22,7 +22,7 @@ A SwiftUI app that allows you to chat with Apple Intelligence using the new [Fou
 1. Clone the repository:
 
 ```bash
-git clone https://github.com/PallavAg/Apple-Intelligence-Chat.git
+git clone https://github.com/AmitAMahadik/Apple-Intelligence-Chat.git
 ```
 
 2. Open the project in Xcode:
