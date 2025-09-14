@@ -2,7 +2,7 @@
 //  Apple_Intelligence_ChatApp.swift
 //  Apple Intelligence Chat
 //
-//  Created by Pallav Agarwal on 6/9/25.
+//  Created by Amit Mahadik on 6/9/25.
 //
 
 import SwiftUI

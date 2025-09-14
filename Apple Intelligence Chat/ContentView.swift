@@ -2,7 +2,7 @@
 //  ContentView.swift
 //  Apple Intelligence Chat
 //
-//  Created by Pallav Agarwal on 6/9/25.
+//  Created by Amit Mahadik on 6/9/25.
 //
 
 import SwiftUI
@@ -163,7 +163,95 @@ struct ContentView: View {
         }
     }
     
+
+    @MainActor
+    private func replaceLastMessage(with text: String) {
+        guard !messages.isEmpty else { return }
+        var last = messages.removeLast()
+        last.text = text
+        messages.append(last)
+    }
+
+    @MainActor
+    private func appendToLastMessage(_ text: String) {
+        guard !messages.isEmpty else { return }
+        var last = messages.removeLast()
+        last.text += text
+        messages.append(last)
+    }
+
     private func sendMessage() {
+        // Optimistic UI update
+        isResponding = true
+        let prompt = inputText
+        let userMessage = ChatMessage(role: .user, text: prompt)
+        messages.append(userMessage)
+        inputText = ""
+
+        // Placeholder assistant message for streaming
+        messages.append(ChatMessage(role: .assistant, text: ""))
+
+        streamingTask = Task {
+            defer {
+                // Always reset, even on throw/cancel
+                Task { @MainActor in isResponding = false }
+                streamingTask = nil
+            }
+
+            do {
+                if session == nil { session = createSession() }
+                guard let currentSession = session else {
+                    await MainActor.run { showError(message: "Session could not be created.") }
+                    return
+                }
+
+                let options = GenerationOptions(temperature: temperature)
+
+                if useStreaming {
+                    let stream = currentSession.streamResponse(to: prompt, options: options)
+
+                    var lastAccumulated = ""
+
+                    for try await snapshot in stream {
+                        #if os(iOS)
+                        hapticStreamGenerator.selectionChanged()
+                        #endif
+
+                        // Unwrap accumulated text from the snapshot.
+                        let accumulated =
+                          //  (snapshot.outputText ??   // newer SDKs
+                          //   snapshot.output ??       // alt name
+                             (snapshot.content) //?? ""  // older alt
+
+                        // Compute delta (only what's new)
+                        let delta: String
+                        if accumulated.hasPrefix(lastAccumulated) {
+                            delta = String(accumulated.dropFirst(lastAccumulated.count))
+                        } else {
+                            // Stream restarted/edited – fall back to replace
+                            await MainActor.run { replaceLastMessage(with: accumulated) }
+                            lastAccumulated = accumulated
+                            continue
+                        }
+
+                        if !delta.isEmpty {
+                            await MainActor.run { appendToLastMessage(delta) }
+                            lastAccumulated = accumulated
+                        }
+                    }
+                } else {
+                    let response = try await currentSession.respond(to: prompt, options: options)
+                    await MainActor.run { replaceLastMessage(with: response.content) }
+                }
+            } catch is CancellationError {
+                // User cancelled generation – nothing else to do
+            } catch {
+                await MainActor.run { showError(message: "An error occurred: \(error.localizedDescription)") }
+            }
+        }
+    }
+    
+ /*   private func sendMessage() {
         isResponding = true
         let userMessage = ChatMessage(role: .user, text: inputText)
         messages.append(userMessage)
@@ -207,7 +295,7 @@ struct ContentView: View {
             streamingTask = nil
         }
     }
-    
+    */
     private func stopStreaming() {
         streamingTask?.cancel()
     }

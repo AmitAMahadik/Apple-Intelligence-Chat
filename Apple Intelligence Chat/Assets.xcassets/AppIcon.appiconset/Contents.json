@@ -1,6 +1,7 @@
 {
   "images" : [
     {
+      "filename" : "AppleInt.png",
       "idiom" : "universal",
       "platform" : "ios",
       "size" : "1024x1024"
@@ -12,6 +13,7 @@
           "value" : "dark"
         }
       ],
+      "filename" : "AppleIntDark.png",
       "idiom" : "universal",
       "platform" : "ios",
       "size" : "1024x1024"
@@ -23,6 +25,7 @@
           "value" : "tinted"
         }
       ],
+      "filename" : "AppleIntTint.png",
       "idiom" : "universal",
       "platform" : "ios",
       "size" : "1024x1024"
