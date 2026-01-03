@@ -1,0 +1,114 @@
+# =====================================================
+# Xcode / SwiftUI (Xcode 15+)
+# =====================================================
+
+# Build products & indexes
+build/
+DerivedData/
+Index.noindex/
+
+# User-specific Xcode state
+*.xcuserstate
+*.xcuserdatad/
+*.xcuserdata/
+
+# Workspace UI state (never commit)
+*.xcworkspace/xcuserdata/
+*.xcworkspace/xcshareddata/WorkspaceSettings.xcsettings
+
+# SwiftUI preview artifacts
+*.preview-thumbnails/
+*.swiftui-previews/
+.swiftui-previews/
+
+# Playground junk
+timeline.xctimeline
+playground.xcworkspace
+
+# =====================================================
+# Swift Package Manager
+# =====================================================
+
+# Build output
+.build/
+
+# Xcode-generated SwiftPM workspace
+.swiftpm/xcode/package.xcworkspace
+.swiftpm/xcode/package.xcworkspace/contents.xcworkspacedata
+
+# SwiftPM cache / transient config
+.swiftpm/configuration/
+
+# =====================================================
+# Apple Intelligence / Foundation Models
+# =====================================================
+
+# Model asset caches (downloaded dynamically)
+# Safe to regenerate; never commit
+FoundationModels.cache/
+FoundationModels/
+ModelAssets/
+AIModels/
+
+# Logs & diagnostics from Foundation Models
+*.foundationmodels.log
+*.ai.debug.log
+
+# =====================================================
+# iOS Simulator / Runtime
+# =====================================================
+
+# Simulator state
+*.simruntime/
+*.simdevice/
+
+# Crash & diagnostic logs
+*.crash
+*.ips
+
+# =====================================================
+# Fastlane / CI
+# =====================================================
+
+fastlane/report.xml
+fastlane/Preview.html
+fastlane/screenshots/**/*.png
+fastlane/test_output/
+
+# =====================================================
+# Secrets / Environment
+# =====================================================
+
+# Environment files
+.env
+.env.*
+*.env
+
+# Local config overrides
+Config.local.xcconfig
+Secrets.xcconfig
+*.plist.secret
+
+# =====================================================
+# Instrumentation / Profiling
+# =====================================================
+
+*.trace
+*.dSYM
+*.dSYM.zip
+
+# =====================================================
+# General OS / Editor Noise
+# =====================================================
+
+.DS_Store
+*.swp
+*.tmp
+*.log
+*.bak
+*.orig
+
+# IDEs
+.idea/
+.vscode/
+
