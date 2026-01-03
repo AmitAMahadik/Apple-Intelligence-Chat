@@ -52,13 +52,26 @@ final class ChatViewModel: ObservableObject {
     private let hapticStreamGenerator = UISelectionFeedbackGenerator()
     #endif
 
-    deinit {
-        streamingTask?.cancel()
+    // MARK: - Init
+
+    init() {
+        NotificationCenter.default.addObserver(
+            forName: .togglePTTRequested,
+            object: nil,
+            queue: nil
+        ) { [weak self] _ in
+            guard let self else { return }
+            Task { @MainActor in
+                self.togglePTT()
+            }
+        }
     }
 
+    deinit {
+        NotificationCenter.default.removeObserver(self)
+        streamingTask?.cancel()
+    }
     
-    // MARK: - Push-to-Talk Controls
-
     // MARK: - Tap-to-Toggle PTT
 
     func togglePTT() {
