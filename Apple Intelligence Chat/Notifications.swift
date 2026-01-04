@@ -8,6 +8,5 @@
 import Foundation
 
 extension Notification.Name {
-    static let togglePTTRequested =
-        Notification.Name("togglePTTRequested")
+    static let togglePTTRequested = Notification.Name("togglePTTRequested")
 }

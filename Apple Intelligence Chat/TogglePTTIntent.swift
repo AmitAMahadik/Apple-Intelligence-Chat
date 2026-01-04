@@ -7,19 +7,20 @@
 
 
 import AppIntents
+import Foundation
 
 struct TogglePTTIntent: AppIntent {
     static let title: LocalizedStringResource = "Toggle Push to Talk"
-    static let description =
-        LocalizedStringResource("Start or stop voice input in Apple Intelligence Chat.")
-
+    static let description = LocalizedStringResource(
+        "Start or stop voice input in Apple Intelligence Chat."
+    )
     static let openAppWhenRun = true
 
     func perform() async throws -> some IntentResult {
-        NotificationCenter.default.post(
-            name: .togglePTTRequested,
-            object: nil
-        )
+        await MainActor.run {
+            NotificationCenter.default.post(name: .togglePTTRequested, object: nil)
+        }
         return .result()
     }
 }
+
